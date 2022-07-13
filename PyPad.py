@@ -7,16 +7,8 @@ import random, string
 def random_string(max_length):
     # Decide how long the string should be
     length = random.randint(1, max_length)
-    # Create variable to append random characters to
-    output = ''
-
-    # Loop "length" times
-    for i in range(length):
-        # Add random ASCII character to "output" variable
-        output += random.choice(string.ascii_letters)
-    
     # Return final string
-    return output  # Example: "FSjxRamuYvws"
+    return ''.join(random.choice(string.ascii_letters) for _ in range(length))
 
 
 # Generate sample test data for testing the padding function
@@ -40,27 +32,25 @@ def test_data(length, string_length=20):
         ]
     ]
     """
-    data = []
-    # Initialise a 2nd dimension of the array to insert column contents/values
-    data.append([])
+    data = [[]]
     for i in range(length):
         data[0].append(f'{i}.')  # Example: "1."
-    
+
     # Create new column and add random strings to it
     data.append([])
-    for i in range(length):
+    for _ in range(length):
         data[1].append(random_string(string_length))  # Example: "FSjxRamuYvws"
-    
+
     # Create new column and add decorative separators
     data.append([])
-    for i in range(length):
+    for _ in range(length):
         data[2].append('|')
-    
+
     # Create new column and add more random strings
     data.append([])
-    for i in range(length):
+    for _ in range(length):
         data[3].append(random_string(string_length))  # Example: "FSjxRamuYvws"
-    
+
     return data
 
 # Pad a list of columns
@@ -71,11 +61,8 @@ def test_data(length, string_length=20):
 def pad(column_list, spacing=1, pad_char=' '):
     # List to insert padded columns and values in to
     padded_list = []
-    # Keep track of the current index, as the for loop provides the index value itself
-    index = 0  # List index
-
     # Iterate through each column in the list
-    for column in column_list:
+    for index, column in enumerate(column_list):
         # Determine the longest value in the list
         longest_value = max(column, key=len)
         # Get the length of that longest value
@@ -91,9 +78,7 @@ def pad(column_list, spacing=1, pad_char=' '):
             padded_item = item.ljust(pad_size, pad_char)
             # Insert the padded item in to the current column in the parent for loop
             padded_list[index].append(padded_item)
-        
-        # Increment the row index
-        index += 1
+
     # Return the padded list in the same format as the unpadded list input
     return padded_list
 
